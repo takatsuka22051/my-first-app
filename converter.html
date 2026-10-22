@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>単位変換ツール</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --text: #1f2933;
+      --muted: #616e7c;
+      --accent: #2f80ed;
+      --border: #d9e2ec;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121417;
+        --card: #1c1f24;
+        --text: #e4e7eb;
+        --muted: #9aa5b1;
+        --accent: #5b9df5;
+        --border: #323840;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    }
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    h1 { font-size: 1.4rem; margin: 0 0 20px; }
+    label {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    select, input {
+      width: 100%;
+      font-size: 1.1rem;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+    select:focus, input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .input-row { display: flex; gap: 8px; align-items: center; }
+    .input-row input { margin-bottom: 0; }
+    .unit { min-width: 2.5em; font-weight: 600; }
+    .result {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 8px;
+      background: var(--bg);
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      min-height: 3.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-wrap: anywhere;
+    }
+    .result.empty { color: var(--muted); font-size: 1rem; font-weight: 400; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>単位変換ツール</h1>
+
+    <label for="type">変換タイプ</label>
+    <select id="type">
+      <option value="kg-lb">kg → lb（キログラム → ポンド）</option>
+      <option value="lb-kg">lb → kg（ポンド → キログラム）</option>
+      <option value="cm-inch">cm → inch（センチ → インチ）</option>
+      <option value="inch-cm">inch → cm（インチ → センチ）</option>
+      <option value="c-f">℃ → ℉（摂氏 → 華氏）</option>
+      <option value="f-c">℉ → ℃（華氏 → 摂氏）</option>
+    </select>
+
+    <label for="value">数値</label>
+    <div class="input-row">
+      <input id="value" type="number" inputmode="decimal" step="any" placeholder="数値を入力">
+      <span class="unit" id="fromUnit">kg</span>
+    </div>
+
+    <div class="result empty" id="result" aria-live="polite">数値を入力すると結果が表示されます</div>
+  </main>
+
+  <script>
+    // 各変換タイプの単位と計算式
+    const conversions = {
+      "kg-lb":   { from: "kg",   to: "lb",   convert: v => v / 0.45359237 },
+      "lb-kg":   { from: "lb",   to: "kg",   convert: v => v * 0.45359237 },
+      "cm-inch": { from: "cm",   to: "inch", convert: v => v / 2.54 },
+      "inch-cm": { from: "inch", to: "cm",   convert: v => v * 2.54 },
+      "c-f":     { from: "℃",   to: "℉",   convert: v => v * 9 / 5 + 32 },
+      "f-c":     { from: "℉",   to: "℃",   convert: v => (v - 32) * 5 / 9 }
+    };
+
+    const typeSelect = document.getElementById("type");
+    const valueInput = document.getElementById("value");
+    const fromUnit = document.getElementById("fromUnit");
+    const result = document.getElementById("result");
+
+    function update() {
+      const c = conversions[typeSelect.value];
+      fromUnit.textContent = c.from;
+
+      const raw = valueInput.value.trim();
+      const v = Number(raw);
+      if (raw === "" || !Number.isFinite(v)) {
+        result.textContent = "数値を入力すると結果が表示されます";
+        result.classList.add("empty");
+        return;
+      }
+
+      // 小数点以下は最大2桁（不要な0は表示しない）
+      const out = Math.round(c.convert(v) * 100) / 100;
+      result.textContent = `${v} ${c.from} = ${out} ${c.to}`;
+      result.classList.remove("empty");
+    }
+
+    typeSelect.addEventListener("change", update);
+    valueInput.addEventListener("input", update);
+    update();
+  </script>
+</body>
+</html>
