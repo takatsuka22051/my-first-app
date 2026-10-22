@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大塚 隆行</title>
+  <meta name="description" content="大塚 隆行の自己紹介ページ。大手IT会社勤務の会社員。AIで仕事を変えたい。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500&family=Zen+Old+Mincho:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #EAF0F2;   /* 白藍：背景 */
+      --ink: #1C2F4F;     /* 藍：文字 */
+      --muted: #5F6B7A;   /* 鈍色：補足 */
+      --rule: #C5CFD8;    /* 罫線 */
+      --accent: #217F63;  /* 若竹：リンク・フォーカス */
+
+      --mincho: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+      --gothic: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #142238;
+        --ink: #E4EBF1;
+        --muted: #9AA7B6;
+        --rule: #2C3E58;
+        --accent: #5CC9A4;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body, h1, h2, p, ul { margin: 0; padding: 0; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--gothic);
+      font-size: 16px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: clamp(24px, 6vw, 96px);
+      max-width: 1040px;
+      min-height: 100vh;
+      min-height: 100svh;
+      margin: 0 auto;
+      padding: clamp(32px, 8vh, 96px) clamp(16px, 6vw, 72px);
+    }
+
+    /* 右：縦書きのひとこと（このページの主役） */
+    .motto {
+      grid-column: 2;
+      grid-row: 1;
+      align-self: start;
+      writing-mode: vertical-rl;
+      font-family: var(--mincho);
+      font-weight: 900;
+      /* 2行の縦書きが1画面に収まるよう、幅と高さの小さいほうで決める */
+      font-size: clamp(36px, min(8vw, 9.5svh), 104px);
+      line-height: 1.25;
+      letter-spacing: 0.04em;
+      text-orientation: upright;
+      animation: brush 1.6s cubic-bezier(.6, 0, .2, 1) .2s both;
+    }
+
+    @keyframes brush {
+      from { clip-path: inset(0 0 100% 0); }
+      to   { clip-path: inset(0 0 0 0); }
+    }
+
+    /* 左：プロフィール */
+    .profile {
+      grid-column: 1;
+      grid-row: 1;
+      align-self: end;
+      max-width: 34em;
+      padding-inline-end: clamp(24px, 6vw, 96px);
+      border-inline-end: 1px solid var(--rule);
+    }
+
+    .name {
+      font-family: var(--mincho);
+      font-weight: 700;
+      font-size: clamp(36px, 6vw, 64px);
+      line-height: 1.25;
+      letter-spacing: 0.12em;
+    }
+    .job {
+      margin-top: 0.75em;
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: 0.04em;
+    }
+
+    .likes {
+      margin-top: clamp(48px, 10vh, 96px);
+    }
+    .likes h2 {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+    .likes ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25em 1.1em;
+      margin-top: 0.4em;
+      list-style: none;
+      font-family: var(--mincho);
+      font-weight: 500;
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.5;
+    }
+
+    .sns {
+      margin-top: clamp(40px, 8vh, 72px);
+      padding-top: 20px;
+      border-top: 1px solid var(--rule);
+      font-size: 15px;
+    }
+    .sns a {
+      color: var(--ink);
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 6px;
+    }
+    .sns a:hover { color: var(--accent); }
+    .sns a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+    .sns .handle { font-weight: 500; }
+
+    /* スマホ：縦書きを上に、プロフィールを下に積む */
+    @media (max-width: 560px) {
+      .page {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .motto {
+        grid-column: 1;
+        justify-self: end;
+        font-size: 12vw;
+      }
+      .profile {
+        grid-column: 1;
+        grid-row: 2;
+        padding-inline-end: 0;
+        padding-top: 32px;
+        border-inline-end: 0;
+        border-top: 1px solid var(--rule);
+      }
+      .name { letter-spacing: 0.08em; }
+      .likes { margin-top: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .motto { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <p class="motto">「AIで<br>仕事を変えたい」</p>
+
+    <div class="profile">
+      <h1 class="name">大塚 隆行</h1>
+      <p class="job">大手IT会社勤務の会社員</p>
+
+      <section class="likes" aria-labelledby="likes-title">
+        <h2 id="likes-title">好きなこと</h2>
+        <ul>
+          <li>運動</li>
+          <li>旅行</li>
+          <li>食べ歩き</li>
+        </ul>
+      </section>
+
+      <p class="sns">
+        X　<a href="https://x.com/takatsuka22051" target="_blank" rel="noopener noreferrer"><span class="handle">@takatsuka22051</span></a>
+      </p>
+    </div>
+  </main>
+</body>
+</html>
