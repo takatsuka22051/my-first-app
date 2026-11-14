@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ToDoリスト</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <h1>ToDoリスト</h1>
+
+    <form id="new-form" class="new-form">
+      <input id="new-input" type="text" placeholder="やることを入力して Enter" autocomplete="off" maxlength="200" aria-label="新しいタスク">
+      <button type="submit">追加</button>
+    </form>
+
+    <div class="filters" role="tablist" aria-label="表示の切り替え">
+      <button type="button" data-filter="all" class="active">すべて</button>
+      <button type="button" data-filter="active">未完了</button>
+      <button type="button" data-filter="done">完了</button>
+    </div>
+
+    <ul id="list" class="list"></ul>
+    <p id="empty" class="empty">タスクはありません</p>
+
+    <footer class="footer">
+      <span id="count">0 件残り</span>
+      <button type="button" id="clear-done" class="link">完了したものを削除</button>
+    </footer>
+
+    <p class="hint">ダブルクリックで編集できます。データはこのブラウザに保存されます。</p>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
